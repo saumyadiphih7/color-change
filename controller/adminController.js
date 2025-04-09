@@ -74,6 +74,8 @@ const loginAdmin = asyncHandler(async (req, res) => {
     _id: admin._id,
     name: admin.name,
     email: admin.email,
+    backgroundColor: admin.backgroundColor,
+    textColor: admin.textColor,
     token,
   });
 
