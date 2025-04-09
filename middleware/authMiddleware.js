@@ -1,10 +1,24 @@
 import Admin from "../model/adminModel.js";
 import jwt from "jsonwebtoken";
+import Customer from "../model/customerModel.js";
 
 const isAdmin = async (req, res, next) => {
   try {
     const admin = await Admin.findById(req.user.id);
     if (!admin) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+    next();
+  }
+  catch (error) {
+    return res.status(401).json({ message: "Unauthorized" });
+  }
+}
+
+const isCustomer = async (req, res, next) => {
+  try {
+    const customer = await Customer.findById(req.user.id);
+    if (!customer) {
       return res.status(401).json({ message: "Unauthorized" });
     }
     next();
@@ -33,4 +47,4 @@ const verifyToken = async (req, res, next) => {
 }
  
 
-export { verifyToken, isAdmin}
+export { verifyToken, isAdmin, isCustomer };

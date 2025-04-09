@@ -79,6 +79,11 @@ const loginAdmin = asyncHandler(async (req, res) => {
 
 })
 
+const logoutAdmin = asyncHandler(async (req, res) => {
+  res.clearCookie("token");
+  res.status(200).json({ message: "Logout successful" });
+});
+
 const createCustomer = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
   if (!name || !email || !password) {
@@ -112,11 +117,76 @@ const createCustomer = asyncHandler(async (req, res) => {
   }
 });
 
-const logoutAdmin = asyncHandler(async (req, res) => {
-  res.clearCookie("token");
-  res.status(200).json({ message: "Logout successful" });
+
+
+const showAdminPanel = asyncHandler(async (req, res) => {
+  const admin = await Admin.findById(req.user.id).select("-password");
+  if (!admin) {
+    res.status(404);
+    throw new Error("Admin not found");
+  }
+
+  res.status(200).json({
+    _id: admin._id,
+    name: admin.name,
+    email: admin.email,
+    backgroundColor: admin.backgroundColor,
+    textColor: admin.textColor,
+  });
 });
+
+const changeAdminPanelTheme = asyncHandler(async (req, res) => {
+
+  const { backgroundColor, textColor } = req.body;
+   
+  if (!backgroundColor || !textColor) {
+    res.status(400);
+    throw new Error("Please fill all fields");
+  }
+
+  const admin = await Admin.findById(req.user.id).select("-password");
+  if (!admin) {
+    res.status(404);
+    throw new Error("Admin not found");
+  }
+  admin.backgroundColor = backgroundColor;
+  admin.textColor = textColor;
+
+  const updatedAdmin = await admin.save();
+  res.status(200).json({
+    _id: updatedAdmin._id,
+    name: updatedAdmin.name,
+    email: updatedAdmin.email,
+    backgroundColor: updatedAdmin.backgroundColor,
+    textColor: updatedAdmin.textColor,
+  });
+});
+
+const changeCustomerPanelTheme = asyncHandler(async (req, res) => {
+  const { backgroundColor, textColor } = req.body;
+
+  if (!backgroundColor || !textColor) {
+    res.status(400);
+    throw new Error("Please fill all fields");
+  }
+
+  const result = await Customer.updateMany({}, { backgroundColor, textColor });
+
+  if (result.modifiedCount === 0) {
+    res.status(404);
+    throw new Error("No customers were updated");
+  }
+
+  res.status(200).json({
+    status: "success",
+    message: "Customer panel theme changed successfully",
+    // modifiedCount: result.modifiedCount,
+  });
+});
+
+
+
   
 
-export { createAdmin, loginAdmin,createCustomer, logoutAdmin };
+export { createAdmin, loginAdmin, createCustomer, logoutAdmin, showAdminPanel , changeAdminPanelTheme ,changeCustomerPanelTheme};
 

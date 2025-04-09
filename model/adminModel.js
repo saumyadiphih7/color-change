@@ -15,6 +15,16 @@ const adminSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  backgroundColor: {
+    type: String,
+    required: true,
+    default: "#ffffff",
+  },
+  textColor: {
+    type: String,
+    required: true,
+    default: "#000000",
+  },
 
   
 }, {
