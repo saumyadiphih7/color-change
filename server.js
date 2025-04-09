@@ -19,10 +19,10 @@ app.use(cookieParser());
 app.use(cors());
 
 import adminRoute from "./routes/adminRoute.js";
-import panelRoute from "./routes/panelRoute.js";
+import customerRoute from "./routes/customerRoute.js";
 
 app.use("/api/admin", adminRoute);
-app.use("/api/panel", panelRoute);
+app.use("/api/customer", customerRoute);
 
 app.get("/", (req, res) => {
   res.send("API is running...");

@@ -1,5 +1,5 @@
-import Customer from "../model/customerModel";
-const asyncHandler = require("express-async-handler");
+import Customer from "../model/customerModel.js";
+import asyncHandler from "express-async-handler";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 

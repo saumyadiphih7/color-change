@@ -3,7 +3,6 @@ import {
   logoutCustomer,
 } from "../controller/customerController.js";
 import {verifyToken, isCustomer } from "../middleware/authMiddleware.js";
-import Customer from "../model/customerModel";
 
 import express from "express";
 
